@@ -12,21 +12,31 @@ class App extends Component {
     constructor(props){
         super(props);
         this.state = {isLoggedIn: false};
+        this.login = this.login.bind(this);
+        localStorage.setItem('user', '{ "email":"user@gmail.com", "password":"password", "isLogged":false}');
 
         
+    }
+    login(){
+        console.log("login");
+        this.setState({ isLoggedIn : true });
+        localStorage.setItem('user', '{ "email":"user@gmail.com", "password":"password", "isLogged":true}');
+        
+
     }
 
 
 
     render() {
-        localStorage.setItem('user', "[{user: 'user' ,password: 'password' , islogged: false}]");
+        
         console.log(localStorage.getItem('user'));
+        console.log(this.state.isLoggedIn);
         const LoginView = () => (
-            <Login />
+            <Login login={this.login} />
         );
 
-        const TodoAppView = () => ( this.state.isLoggedIn ?
-            <TodoApp /> : <Login/>
+        const TodoAppView = () => ( 
+            <TodoApp />
         );
 
         return (
@@ -46,8 +56,8 @@ class App extends Component {
                     </ul>
 
                     <div>
-                        <Route exact path="/" component={LoginView}/>
-                        <Route path="/todo" component={TodoAppView}/>
+                        <Route exact path="/" component={this.state.isLoggedIn ? TodoAppView : LoginView}/>
+                        <Route path="/todo" component={this.state.isLoggedIn ? TodoAppView : LoginView}/>
                     </div>
                 </div>
             </Router>

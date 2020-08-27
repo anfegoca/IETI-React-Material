@@ -3,10 +3,7 @@ import { Todo } from './Todo'
 
 export class TodoList extends React.Component {
 
-    constructor(props) {
-        super(props);
-        
-    }
+    
 
     render() {
         const todoList = this.props.todoList.map((todo, i) => {
@@ -19,10 +16,13 @@ export class TodoList extends React.Component {
             <div>
                 <h1>To do</h1>
                 <table>
-
+                    
+                    
+                    <tbody>
                     <tr>
                         {todoList}
                     </tr>
+                </tbody>
 
                 </table>
             </div>

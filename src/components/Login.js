@@ -11,9 +11,44 @@ import Typography from '@material-ui/core/Typography';
 import '../css/Login.css'
 
 
-export class Login extends React.Component{
+export class Login extends React.Component {
 
-    render(){
+    constructor(props) {
+        super(props);
+        this.state = { email: '', password: '' };
+        this.handleEmailChange = this.handleEmailChange.bind(this);
+        this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleEmailChange(e) {
+        this.setState({
+            email: e.target.value
+
+        });
+
+    }
+    handlePasswordChange(e) {
+        this.setState({
+            password: e.target.value
+        });
+
+    }
+    handleSubmit(e) {
+        e.preventDefault();
+        if (!this.state.email.length || !this.state.password.length)
+            return;
+
+        var user = localStorage.getItem("user");
+        var obj = JSON.parse(user);
+        if(this.state.email === obj.email && this.state.password === obj.password){
+            this.props.login();
+        }
+
+
+    }
+
+    render() {
         return (
             <React.Fragment>
                 <CssBaseline />
@@ -26,7 +61,7 @@ export class Login extends React.Component{
                         <form className="form">
                             <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="email">Email Address</InputLabel>
-                                <Input id="email" name="email" autoComplete="email" autoFocus />
+                                <Input id="email" name="email" autoComplete="email" autoFocus onChange={this.handleEmailChange} value={this.state.email} />
                             </FormControl>
                             <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="password">Password</InputLabel>
@@ -35,6 +70,8 @@ export class Login extends React.Component{
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
+                                    onChange={this.handlePasswordChange}
+                                    value={this.state.password}
                                 />
                             </FormControl>
                             <Button
@@ -43,6 +80,8 @@ export class Login extends React.Component{
                                 variant="contained"
                                 color="primary"
                                 className="submit"
+                                onClick={this.handleSubmit}
+
                             >
                                 Sign in
                             </Button>
